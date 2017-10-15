@@ -1,6 +1,6 @@
 package demo
 
-import demo.common.{KafkaSettings, Process}
+import demo.common.{KafkaSettings, Processing}
 
 import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -9,7 +9,7 @@ import scala.concurrent.Future
 // Explodes from Xmx400M
 object ExplodesDueToMemory {
 
-  def main(args: Array[String]): Unit = while(true) consume().map(Process.toLowercaseAsync).map(produce)
+  def main(args: Array[String]): Unit = while(true) consume().map(Processing.toLowercaseAsync).map(produce)
 
   private val consumer = {
     val settings = KafkaSettings.consumerSettings.withGroupId("explode")
