@@ -12,11 +12,10 @@ object ExplodesDueToMemory {
   def main(args: Array[String]): Unit = while(true) consume().map(Processing.toLowercaseAsync).map(produce)
 
   private val consumer = {
-    val settings = KafkaSettings.consumerSettings.withGroupId("explode")
-    val consumer = settings.createKafkaConsumer()
-    consumer.subscribe(Seq.apply(KafkaSettings.topic).asJava)
-    consumer
+    val settings = KafkaSettings.consumerSettings.withGroupId("explode_mem")
+    settings.createKafkaConsumer()
   }
+  consumer.subscribe(Seq.apply(KafkaSettings.topic).asJava)
 
   private def consume() = {
     val records = consumer.poll(100)
@@ -24,7 +23,7 @@ object ExplodesDueToMemory {
       .map(_.value())
   }
 
-  val out: String = "explode_out"
+  val out: String = "explode_mem_out"
 
   private val producer = KafkaSettings.producerSettings.createKafkaProducer()
 
