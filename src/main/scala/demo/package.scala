@@ -3,6 +3,7 @@ import org.apache.kafka.clients.producer.ProducerRecord
 package object demo {
 
   type Seq[A] = collection.immutable.Seq[A]
+  val Seq = collection.immutable.Seq
 
   object ProducerRecord {
 
