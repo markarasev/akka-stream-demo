@@ -1,6 +1,7 @@
-package demo
+package demo.back_pressure
 
 import demo.common.{KafkaSettings, Processing}
+import demo.{ProducerRecord, Seq}
 
 import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext.Implicits.global

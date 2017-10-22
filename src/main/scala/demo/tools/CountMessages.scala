@@ -1,6 +1,6 @@
 package demo.tools
 
-import demo.ExplodesDueToMemory
+import demo.back_pressure.ExplodesDueToMemory
 import demo.common.KafkaSettings
 
 import collection.JavaConverters._
