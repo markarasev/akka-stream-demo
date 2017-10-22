@@ -1,6 +1,6 @@
 package demo.tools
 
-import demo.back_pressure.ExplodesDueToMemory
+import demo.back_pressure.{BufferOverflowOrDropMessages, ExplodesDueToMemory}
 import demo.common.KafkaSettings
 
 import collection.JavaConverters._
@@ -11,7 +11,9 @@ object CountMessages extends App {
     val settings = KafkaSettings.consumerSettings.withGroupId("count")
     settings.createKafkaConsumer()
   }
-  consumer.subscribe(Seq.apply(ExplodesDueToMemory.out).asJava)
+  consumer.subscribe(Seq.apply(BufferOverflowOrDropMessages.out).asJava)
+//  consumer.subscribe(Seq.apply(KafkaSettings.topic).asJava)
+//  consumer.subscribe(Seq.apply(ExplodesDueToMemory.out).asJava)
 
   private var count = 0
   while (true) {
