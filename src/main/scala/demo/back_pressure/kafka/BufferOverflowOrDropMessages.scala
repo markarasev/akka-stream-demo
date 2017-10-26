@@ -2,7 +2,7 @@ package demo
 package back_pressure
 package kafka
 
-import demo.back_pressure.kafka.common.{KafkaSettings, Processing}
+import demo.back_pressure.kafka.common.KafkaSettings
 
 import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -58,7 +58,7 @@ object BufferOverflowOrDropMessages {
 
   class Processor(buffer: Buffer) {
 
-    def process(): Future[String] = Future.fromTry(buffer.dequeue()).flatMap(Processing.toLowercaseAsync)
+    def process(): Future[String] = Future.fromTry(buffer.dequeue()).flatMap(Processing.toUppercaseAsync)
 
   }
 

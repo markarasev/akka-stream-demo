@@ -2,7 +2,7 @@ package demo
 package back_pressure
 package kafka
 
-import demo.back_pressure.kafka.common.{KafkaSettings, Processing}
+import demo.back_pressure.kafka.common.KafkaSettings
 
 import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -11,7 +11,7 @@ import scala.concurrent.Future
 // Explodes from Xmx400M
 object ExplodesDueToMemory {
 
-  def main(args: Array[String]): Unit = while(true) consume().map(Processing.toLowercaseAsync).map(produce)
+  def main(args: Array[String]): Unit = while(true) consume().map(Processing.toUppercaseAsync).map(produce)
 
   private val consumer = {
     val settings = KafkaSettings.consumerSettings.withGroupId("explode_mem")
