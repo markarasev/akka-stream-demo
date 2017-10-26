@@ -1,7 +1,7 @@
-package demo.tools
+package demo.back_pressure.kafka
+package tools
 
-import demo.ProducerRecord
-import demo.common.KafkaSettings
+import demo.back_pressure.kafka.common.KafkaSettings
 import org.scalacheck.Gen
 
 object ProduceMessages extends App {

@@ -1,11 +1,11 @@
 package demo.back_pressure
+package kafka
 
 import akka.actor.ActorSystem
 import akka.kafka.Subscriptions
 import akka.kafka.scaladsl.{Consumer, Producer}
 import akka.stream.ActorMaterializer
-import demo.ProducerRecord
-import demo.common.{KafkaSettings, Processing}
+import demo.back_pressure.kafka.common.{KafkaSettings, Processing}
 
 import scala.concurrent.ExecutionContext
 

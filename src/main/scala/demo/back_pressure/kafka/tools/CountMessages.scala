@@ -1,7 +1,7 @@
-package demo.tools
+package demo.back_pressure.kafka.tools
 
-import demo.back_pressure.{BufferOverflowOrDropMessages, ExplodesDueToMemory}
-import demo.common.KafkaSettings
+import demo.back_pressure.kafka.BufferOverflowOrDropMessages
+import demo.back_pressure.kafka.common.KafkaSettings
 
 import collection.JavaConverters._
 

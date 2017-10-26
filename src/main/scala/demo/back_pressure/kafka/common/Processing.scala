@@ -1,4 +1,4 @@
-package demo.common
+package demo.back_pressure.kafka.common
 
 import scala.concurrent.{ExecutionContext, Future}
 

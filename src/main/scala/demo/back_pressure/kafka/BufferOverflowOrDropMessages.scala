@@ -1,7 +1,8 @@
 package demo
 package back_pressure
+package kafka
 
-import demo.common.{KafkaSettings, Processing}
+import demo.back_pressure.kafka.common.{KafkaSettings, Processing}
 
 import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext.Implicits.global

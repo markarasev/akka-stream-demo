@@ -1,4 +1,4 @@
-package demo.common
+package demo.back_pressure.kafka.common
 
 import akka.kafka.{ConsumerSettings, ProducerSettings}
 import com.typesafe.config.ConfigFactory
