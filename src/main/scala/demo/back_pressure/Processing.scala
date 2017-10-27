@@ -12,4 +12,11 @@ object Processing {
     str.toUpperCase
   }
 
+  def toOppositeAsync(i: Int)
+                     (implicit ec: ExecutionContext)
+  : Future[Int] = Future {
+    Thread.sleep(500)
+    -i
+  }
+
 }
