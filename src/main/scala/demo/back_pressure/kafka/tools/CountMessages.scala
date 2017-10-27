@@ -17,6 +17,9 @@ object CountMessages extends App {
     Stream.in
     ,ExplodeMem.in
     ,BufferOverflowOrDropMessages.in
+    ,Stream.out
+    ,ExplodeMem.out
+    ,BufferOverflowOrDropMessages.out
   )
   consumer.subscribe(topics.asJava)
 
