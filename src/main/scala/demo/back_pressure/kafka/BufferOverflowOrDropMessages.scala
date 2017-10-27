@@ -20,10 +20,12 @@ object BufferOverflowOrDropMessages {
     }
   }
 
+  val in: String = "explode_buffer_in"
+
   private val consumer = KafkaSettings.consumerSettings
     .withGroupId("explode_buffer")
     .createKafkaConsumer()
-  consumer.subscribe(Seq.apply(KafkaSettings.topic).asJava)
+  consumer.subscribe(Seq(in).asJava)
 
   private def consume() = {
     val records = consumer.poll(100)
@@ -58,7 +60,8 @@ object BufferOverflowOrDropMessages {
 
   class Processor(buffer: Buffer) {
 
-    def process(): Future[String] = Future.fromTry(buffer.dequeue()).flatMap(Processing.toUppercaseAsync)
+    def process(): Future[String] =
+      Future.fromTry(buffer.dequeue()).flatMap(Processing.toUppercaseAsync)
 
   }
 
@@ -67,7 +70,7 @@ object BufferOverflowOrDropMessages {
   private val producer = KafkaSettings.producerSettings.createKafkaProducer()
 
   private def produce(elt: String) = {
-    val record = ProducerRecord.apply(out, elt)
+    val record = ProducerRecord(out, elt)
     producer.send(record)
   }
 

@@ -14,18 +14,23 @@ object Stream {
   def main(args: Array[String]): Unit =
     kafkaSource
       .map(_.record.value())
-      .mapAsync(Runtime.getRuntime.availableProcessors())(Processing.toUppercaseAsync)
-      .map(elt => ProducerRecord.apply("stream_out", elt))
+      .mapAsync(parallelism)(Processing.toUppercaseAsync)
+      .map(elt => ProducerRecord(out, elt))
       .runWith(kafkaSink)
+
+  val in: String = "stream_in"
+  val out: String = "stream_out"
 
   private val kafkaSource = {
     val settings = KafkaSettings.consumerSettings.withGroupId("stream")
-    Consumer.committableSource(settings, Subscriptions.topics(KafkaSettings.topic))
+    Consumer.committableSource(settings, Subscriptions.topics(in))
   }
   private val kafkaSink = Producer.plainSink(KafkaSettings.producerSettings)
 
-  implicit private val system: ActorSystem = ActorSystem.apply()
+  private val parallelism = Runtime.getRuntime.availableProcessors()
+
+  implicit private val system: ActorSystem = ActorSystem()
   implicit private val ec: ExecutionContext = system.dispatcher
-  implicit private val materializer: ActorMaterializer = ActorMaterializer.apply()
+  implicit private val materializer: ActorMaterializer = ActorMaterializer()
 
 }

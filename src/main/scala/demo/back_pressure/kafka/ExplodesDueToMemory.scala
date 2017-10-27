@@ -11,13 +11,19 @@ import scala.concurrent.Future
 // Explodes from Xmx400M
 object ExplodesDueToMemory {
 
-  def main(args: Array[String]): Unit = while(true) consume().map(Processing.toUppercaseAsync).map(produce)
+  def main(args: Array[String]): Unit =
+    while(true)
+      consume()
+        .map(Processing.toUppercaseAsync)
+        .map(produce)
+
+  val in: String = "explode_mem_in"
 
   private val consumer = {
     val settings = KafkaSettings.consumerSettings.withGroupId("explode_mem")
     settings.createKafkaConsumer()
   }
-  consumer.subscribe(Seq.apply(KafkaSettings.topic).asJava)
+  consumer.subscribe(Seq(in).asJava)
 
   private def consume() = {
     val records = consumer.poll(100)
@@ -30,7 +36,7 @@ object ExplodesDueToMemory {
   private val producer = KafkaSettings.producerSettings.createKafkaProducer()
 
   private def produce(eltFuture: Future[String]) = eltFuture.map { elt =>
-    val record = ProducerRecord.apply(out, elt)
+    val record = ProducerRecord(out, elt)
     producer.send(record)
   }
 

@@ -7,8 +7,6 @@ import org.apache.kafka.common.serialization.{ByteArrayDeserializer, ByteArraySe
 
 object KafkaSettings {
 
-  val topic: String = "in"
-
   private val bootstrapServers = "localhost:9092"
 
   val consumerSettings: ConsumerSettings[Array[Byte], String] = {
