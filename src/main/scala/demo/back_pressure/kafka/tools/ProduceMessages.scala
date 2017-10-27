@@ -15,7 +15,7 @@ object ProduceMessages extends App {
 
   for (i <- 1 to 1000000) {
     val elt = generateString()
-    val explodeMemRecord = ProducerRecord(ExplodesDueToMemory.in, elt)
+    val explodeMemRecord = ProducerRecord(ExplodeMem.in, elt)
     val streamRecord = ProducerRecord(Stream.in, elt)
     val dropMessagesRecord = ProducerRecord(BufferOverflowOrDropMessages.in, elt)
     Seq(explodeMemRecord, streamRecord).foreach(producer.send)

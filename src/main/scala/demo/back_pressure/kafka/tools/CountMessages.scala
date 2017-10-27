@@ -15,7 +15,7 @@ object CountMessages extends App {
   }
   private val topics = Seq(
     Stream.in
-    ,ExplodesDueToMemory.in
+    ,ExplodeMem.in
     ,BufferOverflowOrDropMessages.in
   )
   consumer.subscribe(topics.asJava)

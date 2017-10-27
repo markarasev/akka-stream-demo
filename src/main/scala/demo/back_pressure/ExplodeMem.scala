@@ -4,7 +4,7 @@ package back_pressure
 import scala.concurrent.ExecutionContext.Implicits.global
 
 // Explodes from -Xmx400M
-object ExplodeDueToMemory {
+object ExplodeMem {
 
   def main(args: Array[String]): Unit = {
     var i = 0

@@ -9,7 +9,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 // Explodes from Xmx400M
-object ExplodesDueToMemory {
+object ExplodeMem {
 
   def main(args: Array[String]): Unit =
     while(true)
