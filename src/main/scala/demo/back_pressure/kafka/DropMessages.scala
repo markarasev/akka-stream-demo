@@ -9,7 +9,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
 
-object BufferOverflowOrDropMessages {
+object DropMessages {
 
   def main(args: Array[String]): Unit = {
     val buffer = new Buffer(500)
