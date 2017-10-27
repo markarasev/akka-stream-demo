@@ -1,4 +1,6 @@
-package demo.back_pressure.kafka
+package demo
+package back_pressure
+package kafka
 package tools
 
 import demo.back_pressure.kafka.common.KafkaSettings
@@ -13,9 +15,12 @@ object ProduceMessages extends App {
 
   for (i <- 1 to 1000000) {
     val elt = generateString()
-    val record = ProducerRecord.apply(KafkaSettings.topic, elt)
-    producer.send(record)
-    if (i % 100000 == 0) println(s"Sent $i messages.")
+    val explodeMemRecord = ProducerRecord(ExplodesDueToMemory.in, elt)
+    val streamRecord = ProducerRecord(Stream.in, elt)
+    val dropMessagesRecord = ProducerRecord(BufferOverflowOrDropMessages.in, elt)
+    Seq(explodeMemRecord, streamRecord).foreach(producer.send)
+    if (i % 100 == 0) producer.send(dropMessagesRecord)
+    if (i % 100000 == 0) println(s"Generated $i messages.")
   }
 
 }
