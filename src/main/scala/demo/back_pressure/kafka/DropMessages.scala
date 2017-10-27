@@ -13,10 +13,13 @@ object DropMessages {
 
   def main(args: Array[String]): Unit = {
     val buffer = new Buffer(500)
-    val processor = new Processor(buffer)
     while (true) {
-     consume().map(buffer.enqueue)
-     processor.process().map(produce)
+      consume().foreach(buffer.enqueue)
+      buffer.dequeue()
+        .map { elt =>
+          val processingFuture = Processing.toUppercaseAsync(elt)
+          processingFuture.map(produce)
+        }
     }
   }
 
@@ -36,32 +39,20 @@ object DropMessages {
   class Buffer(maxSize: Int) {
 
     private var underlying = Seq.empty[String]
+    private var nDropped = 0
 
-    def enqueue(elt: String): Try[Unit] =
-      if (underlying.size < maxSize) {
+    def enqueue(elt: String): Unit =
+      if (underlying.size < maxSize)
         underlying = underlying :+ elt
-        Success(())
+      else {
+        nDropped += 1
+        println(s"dropped $nDropped elements, last: $elt")
       }
-      else Failure(new Buffer.BufferOverflowException)
 
-    def dequeue(): Try[String] = underlying.headOption.fold[Try[String]](
-      Failure(new Buffer.BufferEmptyException)
-    ) { elt =>
+    def dequeue(): Option[String] = underlying.headOption.map { elt =>
       underlying = underlying.tail
-      Success(elt)
+      elt
     }
-
-  }
-
-  object Buffer {
-    class BufferOverflowException extends RuntimeException
-    class BufferEmptyException extends RuntimeException
-  }
-
-  class Processor(buffer: Buffer) {
-
-    def process(): Future[String] =
-      Future.fromTry(buffer.dequeue()).flatMap(Processing.toUppercaseAsync)
 
   }
 
