@@ -21,19 +21,22 @@ class ReusablePartsExamples extends TestKit(ActorSystem("ReusablePartsExamples")
 
       // source with 1 2 3 4 5
       val source: Source[Int, NotUsed] = Source(data)
+
       // source with 2 4 6 8 10
       val doubledSource: Source[Int, NotUsed] = source.map(_ * 2)
+
       // source with 1 2 3 4 5 2 4 6 8 10
       val mergedSource: Source[Int, NotUsed] = doubledSource.merge(source)
+
       // source with 2 4 2 4 6 8 10
       val filteredSource: Source[Int, NotUsed] = mergedSource.filter(_ % 2 == 0)
 
       val printlnSink: Sink[Any, Future[Done]] = Sink.foreach(println)
 
-      val matFuture = filteredSource.runWith(printlnSink)
+      val mat = filteredSource.runWith(printlnSink)
 
-      val mat = Await.result(matFuture, 1.second)
-      mat shouldBe Done
+      val done = Await.result(mat, 1.second)
+      done shouldBe Done
 
     }
 
