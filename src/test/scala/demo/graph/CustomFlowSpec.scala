@@ -3,14 +3,14 @@ package graph
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.{Keep, Sink, Source}
+import akka.stream.scaladsl.{Flow, Keep, Sink, Source}
 import akka.testkit.TestKit
 import org.scalatest.{Matchers, WordSpecLike}
 
-import scala.concurrent.Await
+import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
 
-class TripleAllAndSplitEvenNumbersFlowSpec
+class CustomFlowSpec
   extends TestKit(ActorSystem("TripleAllAndSplitEvenNumbersFlowSpec"))
     with WordSpecLike with Matchers {
 
@@ -18,8 +18,7 @@ class TripleAllAndSplitEvenNumbersFlowSpec
 
     "print even numbers and accumulate others" in {
       val data = Seq(1, 2, 3, 4, 5)
-      val evenSink = Sink.fold[Int, Int](0)(_ + _)
-      val flow = TripleAllAndSplitEvenNumbersFlow(evenSink)
+      val flow: Flow[Int, Int, Future[Int]] = CustomFlow()
       val oddSink = Sink.foreach[Int](i => println(s"odd number: $i"))
 
       val matFuture = Source(data)
@@ -29,7 +28,7 @@ class TripleAllAndSplitEvenNumbersFlowSpec
 
       val mat = Await.result(matFuture, 1.second)
       mat shouldEqual 18
-      println(s"mat: $mat")
+      println(s"even numbers sum: $mat")
     }
 
   }
